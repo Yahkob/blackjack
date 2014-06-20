@@ -8,7 +8,11 @@ class window.Hand extends Backbone.Collection
     @add(@deck.pop()).last()
 
   stand: ->
-    console.log 'boogers'
+
+  reveal: ->
+    for card in @models
+      do (card) ->
+        unless card.get 'revealed' then card.flip()
 
   scores: ->
     # The scores are an array of potential scores.

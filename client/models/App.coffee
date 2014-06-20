@@ -7,6 +7,13 @@ class window.App extends Backbone.Model
     @set 'dealerHand', deck.dealDealer()
 
   checkBust: ->
-    pHand = (@get 'playerHand').scores()
-    if pHand > 21 then console.log 'you lose'
+    pScore = (@get 'playerHand').scores()
+    if pScore[0] > 21 then console.log 'you lose'
+    dScore = (@get 'dealerHand').scores()
+    if dScore[0] > 21 then console.log 'you win'
+
+  dealerTurn: ->
+    (@get 'dealerHand').reveal()
+    dScore = (@get 'dealerHand').scores()
+    if dScore[0] <= 16 then (@get 'dealerHand').hit()
 
