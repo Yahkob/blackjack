@@ -9,11 +9,7 @@ class window.App extends Backbone.Model
   checkBust: ->
     pScore = (@get 'playerHand').scores()
     if pScore[0] > 21
-      @gameOver()
-
-    dScore = (@get 'dealerHand').scores()
-    if dScore[0] > 21
-      @gameOver()
+      @endRound()
 
   dealerTurn: ->
     (@get 'dealerHand').reveal()
@@ -22,30 +18,26 @@ class window.App extends Backbone.Model
     while dScore[0] <= 16
       dHand.hit()
       dScore = dHand.scores()
-    @checkBust()
-    @gameOver()
+    @endRound()
 
-  gameOver: ->
+  endRound: ->
     pScores = (@get 'playerHand').scores()
     dScores = (@get 'dealerHand').scores()
-
     pFinal = (if pScores[1] <= 21 then pScores[1] else pScores[0])
     dFinal = (if dScores[1] <= 21 then dScores[1] else dScores[0])
-
+    # TODO remove debugging
+    console.log "pFinal: #{pFinal}"
+    console.log "dFinal: #{dFinal}"
     if pFinal <= 21
-      console.log "snoopy"
-      if dFinal <= 21
-        if pFinal > dFinal
-          console.log "You win!"
-        else if pFinal is dFinal
-          console.log "Push!"
-        else
-          console.log "Dealer wins"
-      else
-          console.log "You win!"
-    else
-      console.log "Dealer wins"
-    console.log "GAME OVER"
+      if dFinal <= 21 and dFinal > pFinal
+        bootbox.alert 'LOSER!'
+        return
+      else if dFinal == pFinal
+        bootbox.alert 'Try again'
+        return
+      bootbox.alert 'You win!'
+      return
+    bootbox.alert 'LOSER!'
 
   newGame: ->
     console.log "new game!"
