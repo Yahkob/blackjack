@@ -7,9 +7,8 @@ class window.App extends Backbone.Model
     @set 'dealerHand', deck.dealDealer()
 
   checkBust: ->
-    pScore = (@get 'playerHand').scores()
-    if pScore[0] > 21
-      @endRound()
+    if (@get 'playerHand').isBusted()
+       @endRound()
 
   dealerTurn: ->
     (@get 'dealerHand').reveal()
