@@ -25,19 +25,81 @@ class window.App extends Backbone.Model
     dScores = (@get 'dealerHand').scores()
     pFinal = (if pScores[1] <= 21 then pScores[1] else pScores[0])
     dFinal = (if dScores[1] <= 21 then dScores[1] else dScores[0])
-    # TODO remove debugging
-    console.log "pFinal: #{pFinal}"
-    console.log "dFinal: #{dFinal}"
     if pFinal <= 21
       if dFinal <= 21 and dFinal > pFinal
-        bootbox.alert 'LOSER!'
+        bootbox.dialog
+          message: "You lose!"
+          title: "LOSER!"
+          buttons:
+            success:
+              label: "Play again"
+              className: "btn-success"
+              callback: =>
+                alert('this doesnt work!')
+                return
+
+            main:
+              label: "New table"
+              className: "btn-primary"
+              callback: =>
+                @newGame()
+                return
+
         return
       else if dFinal == pFinal
-        bootbox.alert 'Try again'
+        bootbox.dialog
+          message: "Push!"
+          title: "try again!"
+          buttons:
+            success:
+              label: "Play again"
+              className: "btn-success"
+              callback: =>
+                alert('this doesnt work!')
+                return
+
+            main:
+              label: "New table"
+              className: "btn-primary"
+              callback: =>
+                @newGame()
+                return
         return
-      bootbox.alert 'You win!'
+      bootbox.dialog
+        message: "You win!"
+        title: "WINNER!"
+        buttons:
+          success:
+            label: "Play again"
+            className: "btn-success"
+            callback: =>
+              alert('this doesnt work!')
+              return
+
+          main:
+            label: "New table"
+            className: "btn-primary"
+            callback: =>
+              @newGame()
+              return
       return
-    bootbox.alert 'LOSER!'
+    bootbox.dialog
+        message: "You lose!"
+        title: "LOSER!"
+        buttons:
+          success:
+            label: "Play again"
+            className: "btn-success"
+            callback: =>
+              alert('this doesnt work!')
+              return
+
+          main:
+            label: "New table"
+            className: "btn-primary"
+            callback: =>
+              @newGame()
+              return
 
   newGame: ->
     console.log "new game!"
