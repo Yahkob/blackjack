@@ -28,3 +28,6 @@ class window.Hand extends Backbone.Collection
 
   isBusted: ->
     if @scores()[0] > 21 then true else false
+
+  getScore: ->
+    if @scores()[1] <= 21 then @scores[1] else @scores[0]

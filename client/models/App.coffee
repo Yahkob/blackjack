@@ -19,86 +19,40 @@ class window.App extends Backbone.Model
       dScore = dHand.scores()
     @endRound()
 
+  outcomeMsg: (msg, title) ->
+    console.log('outcomeMsg')
+    bootbox.dialog
+      message: msg
+      title: title
+      buttons:
+        #todo: add next round feature
+        # success:
+          # label: "Play again"
+          # className: "btn-success"
+          # callback: =>
+          #   alert('this doesnt work!')
+          #   return
+
+        main:
+          label: "New table"
+          className: "btn-primary"
+          callback: =>
+            @newGame()
+            return
+
   endRound: ->
-    pScores = (@get 'playerHand').scores()
-    dScores = (@get 'dealerHand').scores()
-    pFinal = (if pScores[1] <= 21 then pScores[1] else pScores[0])
-    dFinal = (if dScores[1] <= 21 then dScores[1] else dScores[0])
+    pFinal = (@get 'playerHand').getScore()
+    dFinal = (@get 'dealerHand').getScore()
     if pFinal <= 21
       if dFinal <= 21 and dFinal > pFinal
-        bootbox.dialog
-          message: "You lose!"
-          title: "LOSER!"
-          buttons:
-            success:
-              label: "Play again"
-              className: "btn-success"
-              callback: =>
-                alert('this doesnt work!')
-                return
-
-            main:
-              label: "New table"
-              className: "btn-primary"
-              callback: =>
-                @newGame()
-                return
-
+        @outcomeMsg('You lose!','LOSER')
         return
-      else if dFinal == pFinal
-        bootbox.dialog
-          message: "Push!"
-          title: "try again!"
-          buttons:
-            success:
-              label: "Play again"
-              className: "btn-success"
-              callback: =>
-                alert('this doesnt work!')
-                return
-
-            main:
-              label: "New table"
-              className: "btn-primary"
-              callback: =>
-                @newGame()
-                return
+      else if dFinal is pFinal
+        @outcomeMsg('Push!','Try again!')
         return
-      bootbox.dialog
-        message: "You win!"
-        title: "WINNER!"
-        buttons:
-          success:
-            label: "Play again"
-            className: "btn-success"
-            callback: =>
-              alert('this doesnt work!')
-              return
-
-          main:
-            label: "New table"
-            className: "btn-primary"
-            callback: =>
-              @newGame()
-              return
+      @outcomeMsg('You win!','WINNER!')
       return
-    bootbox.dialog
-        message: "You lose!"
-        title: "LOSER!"
-        buttons:
-          success:
-            label: "Play again"
-            className: "btn-success"
-            callback: =>
-              alert('this doesnt work!')
-              return
-
-          main:
-            label: "New table"
-            className: "btn-primary"
-            callback: =>
-              @newGame()
-              return
+    @outcomeMsg('You lose!','LOSER!')
 
   newGame: ->
     console.log "new game!"
